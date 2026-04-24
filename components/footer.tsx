@@ -1,11 +1,16 @@
+"use client"
+
 import { Github, Linkedin, Mail } from "lucide-react"
+import { useLanguage } from "@/components/language-provider"
 
 export function Footer() {
+  const { t } = useLanguage()
+
   return (
     <footer className="border-t border-border py-8 px-4">
       <div className="mx-auto max-w-6xl flex flex-col md:flex-row items-center justify-between gap-4">
         <p className="text-xs text-muted-foreground font-mono">
-          <span className="text-primary">{">"}</span> Construido con Next.js, Tailwind CSS y Shadcn/UI
+          <span className="text-primary">{">"}</span> {t.footer.builtWith}
         </p>
 
         <div className="flex items-center gap-4">

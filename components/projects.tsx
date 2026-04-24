@@ -1,121 +1,184 @@
-import { ExternalLink, Github } from "lucide-react"
+"use client"
 
-const projects = [
+import { useState } from "react"
+import { Github, ExternalLink, Users } from "lucide-react"
+import { useLanguage } from "@/components/language-provider"
+import { Reveal } from "@/components/reveal"
+
+type Category = "backend" | "fullstack" | "automation"
+
+type ProjectMeta = {
+  id: "normalizer" | "avanti" | "mystery" | "boostup"
+  categories: Category[]
+  tags: string[]
+  github: string
+  github2?: string
+  team?: boolean
+}
+
+const projectsMeta: ProjectMeta[] = [
   {
-    title: "Normalizador de Direcciones",
-    description:
-      "Sistema que normaliza direcciones con errores tipográficos y formatos inconsistentes. Valida contra una base de datos local (OSM) y APIs de Google, clasifica automáticamente en Aprobación Automática (≥95%), Auditoría Requerida (70-94%) y Rechazo (<70%), y geocodifica coordenadas. Incluye sistema de roles con JWT.",
+    id: "normalizer",
+    categories: ["backend", "automation"],
     tags: ["Python", "FastAPI", "PostgreSQL", "Docker", "JWT"],
     github: "https://github.com/DavidDeVito2001/AmexDirecciones",
-    live: null,
     github2: "https://github.com/DavidDeVito2001/AmexDireccionesFrontend",
   },
   {
-    title: "Avanti — Fintech",
-    description:
-      "Plataforma que conecta emprendedores con inversores, eliminando barreras tradicionales de financiamiento. Permite que cualquier persona con una gran idea obtenga el apoyo necesario para hacerla realidad, democratizando las oportunidades de inversión.",
+    id: "avanti",
+    categories: ["fullstack"],
     tags: ["Node.js", "React", "MongoDB", "Express"],
     github: "https://github.com/No-Country-simulation/S20-17-webapp",
-    live: null,
+    team: true,
   },
   {
-    title: "Formulario Mystery Shopping",
-    description:
-      "Aplicación web para auditores de campo que verifican la implementación de MODO como método de pago en comercios. Permite inicio de sesión por DNI, formularios detallados, subida de fotos como evidencia y edición de registros. Optimizado para uso móvil en campo.",
+    id: "mystery",
+    categories: ["automation", "fullstack"],
     tags: ["Apps Script", "HTML", "CSS", "JavaScript"],
     github: "https://github.com/DavidDeVito2001/MODO-formulario",
-    live: null,
   },
   {
-    title: "BoostUp — Crowdfunding",
-    description:
-      "Plataforma de financiamiento colectivo que conecta proyectos StartUp emergentes con inversores interesados en innovación y sostenibilidad. Facilita la creación y gestión de campañas de financiamiento.",
+    id: "boostup",
+    categories: ["fullstack"],
     tags: ["Node.js", "React", "Express", "MongoDB"],
     github: "https://github.com/No-Country-simulation/c21-21-m-node-react",
-    live: null,
+    team: true,
   },
 ]
 
+type FilterKey = "all" | Category
+
+const filters: Array<{ key: FilterKey; labelKey: "all" | Category }> = [
+  { key: "all", labelKey: "all" },
+  { key: "backend", labelKey: "backend" },
+  { key: "fullstack", labelKey: "fullstack" },
+  { key: "automation", labelKey: "automation" },
+]
+
 export function Projects() {
+  const { t } = useLanguage()
+  const labels = t.projects.filters
+  const [active, setActive] = useState<FilterKey>("all")
+
+  const visible = projectsMeta.filter(
+    (p) => active === "all" || p.categories.includes(active),
+  )
+
   return (
     <section id="projects" className="py-24 px-4">
       <div className="mx-auto max-w-6xl">
-        <div className="flex items-center gap-3 mb-12">
-          <span className="text-primary font-mono text-sm">{"03."}</span>
+        <div className="flex items-center gap-3 mb-8">
+          <span className="text-primary font-mono text-sm">
+            {t.projects.sectionIndex}
+          </span>
           <h2 className="text-2xl md:text-3xl font-bold text-foreground">
-            Proyectos
+            {t.projects.title}
           </h2>
           <div className="flex-1 h-px bg-border" />
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-6">
-          {projects.map((project) => (
-            <div
-              key={project.title}
-              className="group bg-secondary border border-border rounded-lg p-6 hover:border-primary/40 transition-all flex flex-col"
+        <div className="mb-8 flex flex-wrap gap-2">
+          {filters.map((f) => (
+            <button
+              key={f.key}
+              onClick={() => setActive(f.key)}
+              className={`font-mono text-xs px-3 py-1.5 rounded-full border transition-colors ${
+                active === f.key
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "bg-secondary text-muted-foreground border-border hover:border-primary/40 hover:text-primary"
+              }`}
             >
-              {/* Header */}
-              <div className="flex items-start justify-between mb-4">
-                <div className="text-primary font-mono text-2xl">{"{ }"}</div>
-                <div className="flex items-center gap-3">
-                  {project.github && (
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                      aria-label={`Ver repositorio de ${project.title}`}
-                    >
-                      <Github className="h-5 w-5" />
-                    </a>
-                  )}
-                  {"github2" in project && (project as { github2?: string | null }).github2 && (
-                    <a
-                      href={(project as { github2?: string | null }).github2!}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                      aria-label={`Ver front-end de ${project.title}`}
-                      title="Front-end"
-                    >
-                      <ExternalLink className="h-5 w-5" />
-                    </a>
-                  )}
-                  {project.live && (
-                    <a
-                      href={project.live}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                      aria-label={`Ver demo de ${project.title}`}
-                    >
-                      <ExternalLink className="h-5 w-5" />
-                    </a>
-                  )}
-                </div>
-              </div>
-
-              {/* Content */}
-              <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
-                {project.title}
-              </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
-                {project.description}
-              </p>
-
-              {/* Tags */}
-              <div className="flex flex-wrap gap-2">
-                {project.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="text-xs font-mono text-muted-foreground"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
+              {active === f.key && <span className="mr-1">{">"}</span>}
+              {labels[f.labelKey]}
+            </button>
           ))}
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {visible.map((meta, i) => {
+            const copy = t.projects.items[meta.id]
+            return (
+              <Reveal key={meta.id} delay={(i % 4) * 80}>
+                <div className="group h-full bg-secondary border border-border rounded-lg p-6 hover:border-primary/40 hover:shadow-[0_0_25px_-12px_rgba(0,255,136,0.55)] transition-all flex flex-col">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="text-primary font-mono text-2xl">
+                      {"{ }"}
+                    </div>
+                    <div className="flex items-center gap-3">
+                      {meta.team && (
+                        <span
+                          title={t.projects.teamBadge}
+                          className="inline-flex items-center gap-1 text-[10px] font-mono bg-primary/10 text-primary px-2 py-0.5 rounded-full"
+                        >
+                          <Users className="h-3 w-3" />
+                          {t.projects.teamBadge}
+                        </span>
+                      )}
+                      <a
+                        href={meta.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-muted-foreground hover:text-primary transition-colors"
+                        aria-label={`GitHub — ${copy.title}`}
+                      >
+                        <Github className="h-5 w-5" />
+                      </a>
+                      {meta.github2 && (
+                        <a
+                          href={meta.github2}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-muted-foreground hover:text-primary transition-colors"
+                          aria-label={`Front-end — ${copy.title}`}
+                          title="Front-end"
+                        >
+                          <ExternalLink className="h-5 w-5" />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+
+                  <h3 className="text-lg font-semibold text-foreground mb-3 group-hover:text-primary transition-colors">
+                    {copy.title}
+                  </h3>
+
+                  <div className="space-y-2 font-mono text-xs mb-4">
+                    <div>
+                      <span className="text-primary">
+                        {t.projects.problemLabel}:
+                      </span>{" "}
+                      <span className="text-muted-foreground">
+                        {copy.problem}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-primary">
+                        {t.projects.impactLabel}:
+                      </span>{" "}
+                      <span className="text-muted-foreground">
+                        {copy.impact}
+                      </span>
+                    </div>
+                  </div>
+
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-5 flex-1">
+                    {copy.description}
+                  </p>
+
+                  <div className="flex flex-wrap gap-2">
+                    {meta.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="text-[11px] font-mono text-muted-foreground bg-background border border-border px-2 py-0.5 rounded"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </Reveal>
+            )
+          })}
         </div>
       </div>
     </section>
