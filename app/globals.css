@@ -153,6 +153,19 @@
   background: var(--signal);
 }
 
+/* ---- Fallback estático del hero ----
+   Se ve al instante (CSS puro, sin JS) mientras cargan los Beams WebGL.
+   Imita haces de luz azules en diagonal (~30°, igual que rotation={30})
+   para que la transición a los beams reales sea imperceptible. */
+.hero-beams-fallback {
+  background-color: var(--ink);
+  background-image:
+    radial-gradient(120% 80% at 50% -8%, rgba(91, 141, 239, 0.22), transparent 60%),
+    linear-gradient(118deg, transparent 33%, rgba(91, 141, 239, 0.12) 45%, transparent 57%),
+    linear-gradient(122deg, transparent 54%, rgba(91, 141, 239, 0.08) 64%, transparent 75%),
+    linear-gradient(114deg, transparent 6%, rgba(74, 123, 214, 0.07) 17%, transparent 28%);
+}
+
 /* ---- Accesibilidad: respetar reduced-motion globalmente ---- */
 @media (prefers-reduced-motion: reduce) {
   *,

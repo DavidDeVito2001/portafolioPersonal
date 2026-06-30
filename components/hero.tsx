@@ -28,7 +28,12 @@ export function Hero() {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches
     const mobile = window.matchMedia("(max-width: 768px)").matches
     setIsMobile(mobile)
-    setEnabled(!reduce)
+    if (!reduce) {
+      // Primeamos el chunk de three.js apenas hidrata, en paralelo,
+      // para que los Beams aparezcan lo antes posible.
+      void import("@/components/Beams")
+      setEnabled(true)
+    }
   }, [])
 
   useEffect(() => {
@@ -47,13 +52,11 @@ export function Hero() {
       ref={sectionRef}
       className="relative min-h-screen flex items-center justify-center px-4 pt-24 pb-16 overflow-hidden"
     >
-      {/* Fondo estático (fallback + backdrop mientras Beams carga) */}
+      {/* Fondo estático (fallback + backdrop mientras Beams carga).
+          CSS puro: se ve al instante y ya imita los haces, así no se nota
+          la demora de WebGL. */}
       <div
-        className="absolute inset-0 z-0 bg-ink"
-        style={{
-          backgroundImage:
-            "radial-gradient(120% 80% at 50% -10%, rgba(91,141,239,0.18), transparent 60%)",
-        }}
+        className="absolute inset-0 z-0 hero-beams-fallback"
         aria-hidden="true"
       />
 
