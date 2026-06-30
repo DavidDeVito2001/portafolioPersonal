@@ -1,13 +1,12 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
-import { JetBrains_Mono } from 'next/font/google'
+import { Space_Grotesk, Inter, JetBrains_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { LanguageProvider } from '@/components/language-provider'
 import './globals.css'
 
-const _geist = Geist({ subsets: ["latin"], variable: "--font-geist" });
-const _geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono" });
-const _jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains-mono" });
+const _display = Space_Grotesk({ subsets: ["latin"], variable: "--font-space-grotesk", display: "swap" });
+const _sans = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
+const _mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrains-mono", display: "swap" });
 
 const SITE_URL = "https://david-de-vito.vercel.app"
 const TITLE = "David De Vito | Back-end Developer & Automatización"
@@ -67,6 +66,30 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 }
 
+const PERSON_JSONLD = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "David De Vito",
+  url: SITE_URL,
+  jobTitle: "Back-end Developer",
+  description: DESCRIPTION,
+  sameAs: [
+    "https://github.com/DavidDeVito2001",
+    "https://www.linkedin.com/in/david-devito-backend/",
+    "https://www.workana.com/freelancer/437cc119618fe4e29dcd802b65cc8825",
+  ],
+  knowsAbout: [
+    "Python",
+    "FastAPI",
+    "Docker",
+    "PostgreSQL",
+    "Automation",
+    "n8n",
+    "Make",
+    "Google Apps Script",
+  ],
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -74,7 +97,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={`${_geist.variable} ${_geistMono.variable} ${_jetbrainsMono.variable} font-sans antialiased`}>
+      <body className={`${_display.variable} ${_sans.variable} ${_mono.variable} font-sans antialiased`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(PERSON_JSONLD) }}
+        />
         <LanguageProvider>
           {children}
           <Analytics />

@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Preview — Dirección "Mesa de operaciones"</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0E1117;
+    --surface:#161A20;
+    --surface-2:#1B212A;
+    --bone:#ECE7DD;
+    --muted:#8A93A0;
+    --faint:#5C6675;
+    --line:#232B36;
+    --signal:#5B8DEF;
+    --signal-soft:#5b8def33;
+    --display:"Bricolage Grotesque", system-ui, sans-serif;
+    --body:"IBM Plex Sans", system-ui, sans-serif;
+    --mono:"IBM Plex Mono", ui-monospace, monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--ink);
+    color:var(--bone);
+    font-family:var(--body);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(60% 50% at 80% -10%, #1a2230 0%, transparent 60%),
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:auto, 64px 64px, 64px 64px;
+    background-position:0 0, 0 0, 0 0;
+  }
+  .grid-fade{position:fixed;inset:0;pointer-events:none;background:radial-gradient(120% 80% at 50% 0%, transparent 40%, var(--ink) 78%);z-index:0}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 32px;position:relative;z-index:1}
+
+  /* eyebrow / labels */
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+  .signal{color:var(--signal)}
+
+  /* top bar */
+  header{position:sticky;top:0;z-index:5;backdrop-filter:blur(8px);background:#0f1216cc;border-bottom:1px solid var(--line)}
+  .bar{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-weight:700;font-size:18px;letter-spacing:-.01em}
+  .logo .knot{width:14px;height:14px;border-radius:50%;border:2px solid var(--signal);position:relative}
+  .logo .knot::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--signal)}
+  nav{display:flex;gap:26px}
+  nav a{color:var(--muted);text-decoration:none;font-size:14px}
+  nav a:hover{color:var(--bone)}
+  .lang{font-family:var(--mono);font-size:12px;color:var(--faint);border:1px solid var(--line);border-radius:6px;padding:4px 8px}
+  .lang b{color:var(--ink);background:var(--bone);padding:2px 5px;border-radius:3px}
+
+  /* hero */
+  .hero{padding:92px 0 64px}
+  .hero h1{font-family:var(--display);font-weight:800;font-size:clamp(40px,6.2vw,76px);line-height:1.02;letter-spacing:-.025em;max-width:16ch;margin:18px 0 22px}
+  .hero h1 em{font-style:normal;color:var(--signal)}
+  .hero p.lead{font-size:clamp(16px,1.6vw,19px);color:var(--muted);max-width:54ch}
+  .hero p.lead b{color:var(--bone);font-weight:500}
+  .cta{display:flex;gap:14px;margin-top:30px;flex-wrap:wrap}
+  .btn{font-family:var(--mono);font-size:13.5px;letter-spacing:.02em;padding:12px 20px;border-radius:8px;text-decoration:none;display:inline-flex;align-items:center;gap:9px;border:1px solid transparent}
+  .btn.primary{background:var(--signal);color:#0a1020;font-weight:600}
+  .btn.primary:hover{filter:brightness(1.08)}
+  .btn.ghost{border-color:var(--line);color:var(--bone)}
+  .btn.ghost:hover{border-color:var(--signal);color:var(--signal)}
+
+  /* signature: pipeline panel */
+  .panel{margin-top:54px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(180deg,var(--surface),#12161c);overflow:hidden}
+  .panel-head{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:12px;color:var(--faint)}
+  .live{display:inline-flex;align-items:center;gap:7px;color:var(--muted)}
+  .live .led{width:7px;height:7px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 0 var(--signal);animation:pulse 2.4s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 #5b8def66}70%{box-shadow:0 0 0 7px #5b8def00}100%{box-shadow:0 0 0 0 #5b8def00}}
+  .pipeline{display:flex;align-items:stretch;gap:0;padding:26px 20px;overflow-x:auto}
+  .pnode{flex:1;min-width:120px;text-align:center;padding:0 6px}
+  .pnode .dot{width:38px;height:38px;margin:0 auto 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);display:grid;place-items:center;color:var(--signal);font-family:var(--mono);font-size:15px}
+  .pnode .nlabel{font-family:var(--mono);font-size:12.5px;color:var(--bone)}
+  .pnode .nsub{font-size:11px;color:var(--faint);margin-top:2px}
+  .pedge{align-self:flex-start;margin-top:18px;flex:0 0 46px;height:1px;background:linear-gradient(90deg,var(--line),var(--faint),var(--line));position:relative}
+  .pedge::after{content:"";position:absolute;top:-2px;left:0;width:6px;height:6px;border-radius:50%;background:var(--signal);box-shadow:0 0 8px var(--signal);animation:flow 3.2s linear infinite}
+  @keyframes flow{0%{left:-4px;opacity:0}10%{opacity:1}90%{opacity:1}100%{left:46px;opacity:0}}
+  .stats{display:flex;gap:0;border-top:1px solid var(--line)}
+  .stat{flex:1;padding:16px 18px;border-right:1px solid var(--line)}
+  .stat:last-child{border-right:0}
+  .stat .v{font-family:var(--display);font-weight:700;font-size:22px}
+  .stat .k{font-family:var(--mono);font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.1em;margin-top:2px}
+
+  /* projects */
+  .projects{padding:76px 0 90px}
+  .sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:8px}
+  .sec-head .ix{font-family:var(--mono);color:var(--signal);font-size:13px}
+  .sec-head h2{font-family:var(--display);font-weight:700;font-size:30px;letter-spacing:-.02em}
+  .sec-sub{color:var(--muted);font-size:14.5px;margin-bottom:34px;max-width:60ch}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .card{border:1px solid var(--line);border-radius:14px;background:var(--surface);overflow:hidden;display:flex;flex-direction:column;transition:border-color .2s, transform .2s}
+  .card:hover{border-color:#36404d;transform:translateY(-3px)}
+  .media{aspect-ratio:16/11;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+
+  /* browser frame */
+  .frame{height:100%;display:flex;flex-direction:column;background:#0b0e12}
+  .frame-bar{display:flex;align-items:center;gap:7px;padding:9px 12px;border-bottom:1px solid var(--line);background:var(--surface-2)}
+  .frame-bar .d{width:9px;height:9px;border-radius:50%;background:#39414d}
+  .frame-url{margin-left:8px;font-family:var(--mono);font-size:11px;color:var(--faint)}
+  .frame img{width:100%;height:100%;object-fit:cover;object-position:top}
+
+  /* schematic media (back-end / automation, no UI) */
+  .schematic{height:100%;padding:18px 18px;display:flex;flex-direction:column;justify-content:center;gap:0;background:
+     radial-gradient(80% 60% at 50% 0%, #1a2230 0%, transparent 70%), var(--surface);}
+  .snode{display:flex;align-items:center;gap:12px}
+  .snode .chip{font-family:var(--mono);font-size:12px;color:var(--bone);border:1px solid var(--line);background:#0e1217;border-radius:7px;padding:7px 11px;min-width:0;white-space:nowrap}
+  .snode .chip.out{border-color:var(--signal);color:var(--signal);box-shadow:0 0 0 3px var(--signal-soft)}
+  .snode .meta{font-family:var(--mono);font-size:10.5px;color:var(--faint)}
+  .sconn{height:16px;width:1px;background:var(--line);margin-left:18px}
+  .sconn .tick{display:block;width:5px;height:5px;border-radius:50%;background:var(--signal);margin:5px 0 0 -2px;opacity:.8}
+
+  .body{padding:18px 18px 20px;display:flex;flex-direction:column;flex:1}
+  .kls{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;color:var(--faint);margin-bottom:9px}
+  .kls .tag{color:var(--muted)}
+  .card h3{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:-.01em;margin-bottom:8px}
+  .card p{font-size:13.5px;color:var(--muted);flex:1}
+  .impact{margin-top:14px;padding-top:13px;border-top:1px solid var(--line);display:flex;align-items:center;gap:9px;font-size:13px}
+  .impact .ico{color:var(--signal)}
+  .impact b{color:var(--bone);font-weight:600}
+  .stack{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+  .stack span{font-family:var(--mono);font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:3px 7px}
+
+  .note{max-width:1120px;margin:0 auto;padding:0 32px 60px;color:var(--faint);font-family:var(--mono);font-size:12px}
+  @media (max-width:880px){.cards{grid-template-columns:1fr}.pipeline{padding:18px 8px}}
+  @media (prefers-reduced-motion:reduce){.pedge::after,.live .led{animation:none}}
+</style>
+</head>
+<body>
+<div class="grid-fade"></div>
+
+<header>
+  <div class="wrap bar">
+    <div class="logo"><span class="knot"></span> David De Vito</div>
+    <nav>
+      <a href="#">Trabajo</a><a href="#">Servicios</a><a href="#">Sobre mí</a><a href="#">Reseñas</a><a href="#">Contacto</a>
+    </nav>
+    <span class="lang"><b>ES</b> EN</span>
+  </div>
+</header>
+
+<main>
+  <section class="wrap hero">
+    <span class="eyebrow">Back-end &amp; Automation Engineer · Buenos Aires · <span class="signal">disponible</span></span>
+    <h1>Construyo la maquinaria que tu negocio <em>no ve</em>, pero usa todo el día.</h1>
+    <p class="lead"><b>APIs, pipelines de datos y automatizaciones</b> que sacan el trabajo manual del medio y siguen corriendo cuando cerrás la laptop. Python · FastAPI · Docker · n8n · Make.</p>
+    <div class="cta">
+      <a class="btn primary" href="#">Ver trabajo seleccionado →</a>
+      <a class="btn ghost" href="#">Descargar CV</a>
+    </div>
+
+    <!-- SIGNATURE: pipeline panel -->
+    <div class="panel">
+      <div class="panel-head">
+        <span class="live"><span class="led"></span> sistema en producción</span>
+        <span>uptime&nbsp;·&nbsp;sin intervención manual</span>
+      </div>
+      <div class="pipeline">
+        <div class="pnode"><div class="dot">⟶</div><div class="nlabel">Origen</div><div class="nsub">sheets · web · API</div></div>
+        <div class="pedge"></div>
+        <div class="pnode"><div class="dot">ƒ</div><div class="nlabel">Transformar</div><div class="nsub">normalizar · IA</div></div>
+        <div class="pedge"></div>
+        <div class="pnode"><div class="dot">✓</div><div class="nlabel">Validar</div><div class="nsub">reglas · confianza</div></div>
+        <div class="pedge"></div>
+        <div class="pnode"><div class="dot">↪</div><div class="nlabel">Entregar</div><div class="nsub">DB · email · redes</div></div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="v">5,0★</div><div class="k">Workana</div></div>
+        <div class="stat"><div class="v">Mar 2025</div><div class="k">en TradingPos</div></div>
+        <div class="stat"><div class="v">12+</div><div class="k">proyectos entregados</div></div>
+        <div class="stat"><div class="v">ES · EN</div><div class="k">bilingüe</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap projects">
+    <div class="sec-head"><span class="ix">/ trabajo</span><h2>Trabajo seleccionado</h2></div>
+    <p class="sec-sub">Tres tipos de proyecto, un mismo criterio: resolver un problema real y dejarlo funcionando solo. Las webs muestran captura; el back-end y las automatizaciones, su arquitectura.</p>
+
+    <div class="cards">
+      <!-- TIER 1: web con captura en frame -->
+      <article class="card">
+        <div class="media">
+          <div class="frame">
+            <div class="frame-bar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="frame-url">visagebsas.com.ar</span></div>
+            <img src="/projects/visage.webp" alt="Visage Buenos Aires" />
+          </div>
+        </div>
+        <div class="body">
+          <div class="kls"><span class="signal">WEB</span><span class="tag">· sitio bilingüe</span></div>
+          <h3>Visage Buenos Aires</h3>
+          <p>Centro de estética que necesitaba comunicar mejor los cuidados de cada tratamiento y centralizar el contacto.</p>
+          <div class="impact"><span class="ico">▲</span><span>Mejoró la comunicación con sus clientes.</span></div>
+          <div class="stack"><span>Next.js</span><span>Tailwind</span><span>shadcn/ui</span></div>
+        </div>
+      </article>
+
+      <!-- TIER 2: back-end como esquema -->
+      <article class="card">
+        <div class="media">
+          <div class="schematic">
+            <div class="snode"><span class="chip">Excel en lote</span><span class="meta">entrada</span></div>
+            <div class="sconn"><span class="tick"></span></div>
+            <div class="snode"><span class="chip">Validar · OSM + Google</span></div>
+            <div class="sconn"><span class="tick"></span></div>
+            <div class="snode"><span class="chip">Clasificar · ≥95 / 70–94 / &lt;70</span></div>
+            <div class="sconn"><span class="tick"></span></div>
+            <div class="snode"><span class="chip out">Geocodificar → lat/lng</span></div>
+          </div>
+        </div>
+        <div class="body">
+          <div class="kls"><span class="signal">BACK-END</span><span class="tag">· FastAPI</span></div>
+          <h3>Normalizador de Direcciones</h3>
+          <p>Miles de direcciones con errores y formatos inconsistentes que requerían validación manual.</p>
+          <div class="impact"><span class="ico">▲</span><span>Procesamiento en lote y <b>menos auditoría manual</b>.</span></div>
+          <div class="stack"><span>Python</span><span>FastAPI</span><span>PostgreSQL</span><span>JWT</span></div>
+        </div>
+      </article>
+
+      <!-- TIER 2: automatización como esquema -->
+      <article class="card">
+        <div class="media">
+          <div class="schematic">
+            <div class="snode"><span class="chip">Google Maps</span><span class="meta">descubre</span></div>
+            <div class="sconn"><span class="tick"></span></div>
+            <div class="snode"><span class="chip">Scrapea sitios → emails</span></div>
+            <div class="sconn"><span class="tick"></span></div>
+            <div class="snode"><span class="chip">IA redacta personalizado</span></div>
+            <div class="sconn"><span class="tick"></span></div>
+            <div class="snode"><span class="chip out">Envía + hace seguimiento</span></div>
+          </div>
+        </div>
+        <div class="body">
+          <div class="kls"><span class="signal">AUTOMATIZACIÓN</span><span class="tag">· Make</span></div>
+          <h3>Captación de Leads con IA</h3>
+          <p>Buscar negocios y contactos calificados a mano consumía horas y no escalaba.</p>
+          <div class="impact"><span class="ico">▲</span><span>Prospección <b>de punta a punta, sin trabajo manual</b>.</span></div>
+          <div class="stack"><span>Make</span><span>Google Maps</span><span>OpenAI</span></div>
+        </div>
+      </article>
+    </div>
+  </section>
+</main>
+
+<div class="note">// preview de dirección — no afecta el sitio. archivo: public/preview.html</div>
+</body>
+</html>

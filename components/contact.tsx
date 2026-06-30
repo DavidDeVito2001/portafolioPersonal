@@ -1,9 +1,31 @@
 "use client"
 
 import { useState, type FormEvent } from "react"
-import { Github, Linkedin, Mail, Send, Loader2 } from "lucide-react"
+import { Github, Linkedin, Mail, Send, Loader2, CheckCircle2 } from "lucide-react"
 import { useLanguage } from "@/components/language-provider"
 import { Reveal } from "@/components/reveal"
+import { SectionHeader } from "@/components/section-header"
+
+const CONTACT_LINKS = [
+  {
+    href: "mailto:daviddevito01@gmail.com",
+    label: "daviddevito01@gmail.com",
+    Icon: Mail,
+    external: false,
+  },
+  {
+    href: "https://github.com/DavidDeVito2001",
+    label: "github.com/DavidDeVito2001",
+    Icon: Github,
+    external: true,
+  },
+  {
+    href: "https://www.linkedin.com/in/david-devito-backend/",
+    label: "linkedin.com/in/david-devito-backend",
+    Icon: Linkedin,
+    external: true,
+  },
+] as const
 
 export function Contact() {
   const { t } = useLanguage()
@@ -38,77 +60,49 @@ export function Contact() {
     }
   }
 
+  const inputClass =
+    "w-full rounded-md border border-line bg-ink px-4 py-2.5 text-sm text-bone placeholder:text-faint transition-colors focus:border-signal focus:outline-none"
+  const labelClass = "mb-1.5 block text-xs font-medium text-muted-foreground"
+
   return (
     <section id="contact" className="py-24 px-4">
       <div className="mx-auto max-w-6xl">
-        <div className="flex items-center gap-3 mb-12">
-          <span className="text-primary font-mono text-sm">
-            {t.contact.sectionIndex}
-          </span>
-          <h2 className="text-2xl md:text-3xl font-bold text-foreground">
-            {t.contact.title}
-          </h2>
-          <div className="flex-1 h-px bg-border" />
-        </div>
+        <SectionHeader index={t.contact.sectionIndex} title={t.contact.title} />
 
         <div className="grid md:grid-cols-2 gap-12">
           <Reveal>
             <div className="space-y-6">
-              <p className="text-muted-foreground leading-relaxed">
+              <p className="leading-relaxed text-muted-foreground">
                 {t.contact.intro}
               </p>
 
               <div className="space-y-4">
-                <a
-                  href="mailto:daviddevito01@gmail.com"
-                  className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors group"
-                >
-                  <div className="h-10 w-10 rounded-md bg-secondary border border-border flex items-center justify-center group-hover:border-primary/40 transition-colors">
-                    <Mail className="h-5 w-5" />
-                  </div>
-                  <span className="text-sm font-mono">
-                    daviddevito01@gmail.com
-                  </span>
-                </a>
-
-                <a
-                  href="https://github.com/DavidDeVito2001"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors group"
-                >
-                  <div className="h-10 w-10 rounded-md bg-secondary border border-border flex items-center justify-center group-hover:border-primary/40 transition-colors">
-                    <Github className="h-5 w-5" />
-                  </div>
-                  <span className="text-sm font-mono">
-                    github.com/DavidDeVito2001
-                  </span>
-                </a>
-
-                <a
-                  href="https://www.linkedin.com/in/david-devito-backend/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors group"
-                >
-                  <div className="h-10 w-10 rounded-md bg-secondary border border-border flex items-center justify-center group-hover:border-primary/40 transition-colors">
-                    <Linkedin className="h-5 w-5" />
-                  </div>
-                  <span className="text-sm font-mono">
-                    linkedin.com/in/david-devito-backend
-                  </span>
-                </a>
+                {CONTACT_LINKS.map(({ href, label, Icon, external }) => (
+                  <a
+                    key={label}
+                    href={href}
+                    {...(external
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
+                    className="group flex items-center gap-3 text-muted-foreground transition-colors hover:text-signal"
+                  >
+                    <div className="flex h-10 w-10 items-center justify-center rounded-md border border-line bg-surface transition-colors group-hover:border-signal/40">
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <span className="font-mono text-sm">{label}</span>
+                  </a>
+                ))}
 
                 <a
                   href="https://www.workana.com/freelancer/437cc119618fe4e29dcd802b65cc8825"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-muted-foreground hover:text-primary transition-colors group"
+                  className="group flex items-center gap-3 text-muted-foreground transition-colors hover:text-signal"
                 >
-                  <div className="h-10 w-10 rounded-md bg-secondary border border-border flex items-center justify-center group-hover:border-primary/40 transition-colors font-mono text-sm font-bold text-muted-foreground group-hover:text-primary">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-md border border-line bg-surface font-mono text-sm font-bold transition-colors group-hover:border-signal/40">
                     W
                   </div>
-                  <span className="text-sm font-mono">
+                  <span className="font-mono text-sm">
                     workana.com/freelancer/david-de-vito
                   </span>
                 </a>
@@ -117,31 +111,24 @@ export function Contact() {
           </Reveal>
 
           <Reveal delay={120}>
-            <div className="bg-secondary border border-border rounded-lg p-6">
-              <div className="flex items-center gap-2 mb-6 text-muted-foreground font-mono text-xs">
-                <span className="h-3 w-3 rounded-full bg-destructive" />
-                <span className="h-3 w-3 rounded-full bg-[#f59e0b]" />
-                <span className="h-3 w-3 rounded-full bg-primary" />
-                <span className="ml-2">{t.contact.fileName}</span>
-              </div>
-
+            <div className="rounded-xl border border-line bg-surface p-6">
               {submitted ? (
-                <div className="text-center py-12">
-                  <div className="text-primary font-mono text-lg mb-2">
+                <div
+                  role="status"
+                  className="flex flex-col items-center py-12 text-center"
+                >
+                  <CheckCircle2 className="mb-3 h-10 w-10 text-signal" />
+                  <div className="mb-2 font-display text-lg font-semibold text-bone">
                     {t.contact.successHeader}
                   </div>
-                  <p className="text-muted-foreground text-sm">
+                  <p className="text-sm text-muted-foreground">
                     {t.contact.success}
                   </p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <label
-                      htmlFor="name"
-                      className="block text-xs font-mono text-muted-foreground mb-1.5"
-                    >
-                      <span className="text-primary">$</span>{" "}
+                    <label htmlFor="name" className={labelClass}>
                       {t.contact.nameLabel}
                     </label>
                     <input
@@ -150,16 +137,12 @@ export function Contact() {
                       type="text"
                       required
                       placeholder={t.contact.namePlaceholder}
-                      className="w-full bg-background border border-border rounded-md px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-primary focus:outline-none transition-colors font-mono"
+                      className={inputClass}
                     />
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-xs font-mono text-muted-foreground mb-1.5"
-                    >
-                      <span className="text-primary">$</span>{" "}
+                    <label htmlFor="email" className={labelClass}>
                       {t.contact.emailLabel}
                     </label>
                     <input
@@ -168,16 +151,12 @@ export function Contact() {
                       type="email"
                       required
                       placeholder={t.contact.emailPlaceholder}
-                      className="w-full bg-background border border-border rounded-md px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-primary focus:outline-none transition-colors font-mono"
+                      className={inputClass}
                     />
                   </div>
 
                   <div>
-                    <label
-                      htmlFor="message"
-                      className="block text-xs font-mono text-muted-foreground mb-1.5"
-                    >
-                      <span className="text-primary">$</span>{" "}
+                    <label htmlFor="message" className={labelClass}>
                       {t.contact.messageLabel}
                     </label>
                     <textarea
@@ -186,14 +165,14 @@ export function Contact() {
                       required
                       rows={4}
                       placeholder={t.contact.messagePlaceholder}
-                      className="w-full bg-background border border-border rounded-md px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/50 focus:border-primary focus:outline-none transition-colors resize-none font-mono"
+                      className={`${inputClass} resize-none`}
                     />
                   </div>
 
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground font-mono text-sm font-semibold px-6 py-3 rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-signal px-6 py-3 text-sm font-semibold text-ink transition-colors hover:bg-signal-strong disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {loading ? (
                       <>
@@ -209,7 +188,10 @@ export function Contact() {
                   </button>
 
                   {error && (
-                    <p className="text-sm text-destructive font-mono text-center">
+                    <p
+                      role="alert"
+                      className="text-center text-sm text-destructive"
+                    >
                       {error}
                     </p>
                   )}

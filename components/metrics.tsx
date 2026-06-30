@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { Star, Rocket, Wrench, Clock } from "lucide-react"
+import { Star, Rocket, Languages, Clock } from "lucide-react"
 import { useLanguage } from "@/components/language-provider"
 
 function useCountUp(target: number, durationMs = 1200) {
@@ -66,18 +66,19 @@ export function Metrics() {
       sub: t.metrics.rating.sub,
     },
     {
+      // 12 = los proyectos reales que muestra la sección Proyectos (sin "+", para
+      // no contradecir lo que se ve en el sitio).
       icon: Rocket,
-      value: 4,
-      suffix: "+",
+      value: 12,
+      suffix: "",
       label: t.metrics.projects.label,
       sub: t.metrics.projects.sub,
     },
     {
-      icon: Wrench,
-      value: 22,
-      suffix: "+",
-      label: t.metrics.techs.label,
-      sub: t.metrics.techs.sub,
+      icon: Languages,
+      text: "ES · EN",
+      label: t.metrics.bilingual.label,
+      sub: t.metrics.bilingual.sub,
     },
     {
       icon: Clock,
@@ -90,7 +91,7 @@ export function Metrics() {
 
   return (
     <section aria-label="Metrics" className="px-4 pb-4">
-      <div className="mx-auto max-w-6xl grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+      <div className="mx-auto grid max-w-6xl grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
         {items.map((it) => (
           <MetricCard key={it.label} {...it} />
         ))}
@@ -102,40 +103,42 @@ export function Metrics() {
 function MetricCard({
   icon: Icon,
   value,
-  suffix,
+  suffix = "",
+  text,
   label,
   sub,
 }: {
   icon: React.ComponentType<{ className?: string }>
-  value: number
-  suffix: string
+  value?: number
+  suffix?: string
+  text?: string
   label: string
   sub: string
 }) {
-  const { value: v, ref } = useCountUp(value)
+  // Métricas numéricas hacen count-up; las de texto (ej. "ES · EN") se muestran fijas.
+  const { value: v, ref } = useCountUp(value ?? 0)
 
   return (
     <div
       ref={ref}
-      className="group bg-secondary border border-border rounded-lg p-4 md:p-5 hover:border-primary/40 transition-colors"
+      className="group rounded-xl border border-line bg-surface p-4 transition-[transform,border-color] duration-200 hover:-translate-y-0.5 hover:border-signal/40 md:p-5"
     >
-      <div className="flex items-center justify-between mb-2">
-        <Icon className="h-4 w-4 text-primary" />
-        <span className="text-[10px] font-mono text-muted-foreground">
-          {">_"}
-        </span>
+      <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-md bg-signal/10 text-signal">
+        <Icon className="h-4 w-4" />
       </div>
-      <div className="font-mono">
-        <div className="text-2xl md:text-3xl font-bold text-foreground leading-none">
-          {v}
-          <span className="text-primary">{suffix}</span>
-        </div>
-        <div className="mt-2 text-xs text-foreground/80 leading-tight">
-          {label}
-        </div>
-        <div className="text-[11px] text-muted-foreground mt-0.5 leading-tight">
-          {sub}
-        </div>
+      <div className="font-display text-2xl font-bold leading-none text-bone md:text-3xl">
+        {text ? (
+          text
+        ) : (
+          <>
+            {v}
+            <span className="text-signal">{suffix}</span>
+          </>
+        )}
+      </div>
+      <div className="mt-2 text-xs leading-tight text-bone/85">{label}</div>
+      <div className="mt-0.5 text-[11px] leading-tight text-muted-foreground">
+        {sub}
       </div>
     </div>
   )

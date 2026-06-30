@@ -23,6 +23,24 @@ const es = {
     ctaProjects: "Ver Proyectos",
     ctaContact: "Contacto",
     ctaCv: "Descargar CV",
+    eyebrow: "Back-end & Automation Engineer · Buenos Aires",
+    available: "disponible",
+    headlinePre: "Construyo la maquinaria que tu negocio ",
+    headlineAccent: "no ve",
+    headlinePost: ", pero usa todo el día.",
+    leadStrong: "APIs, pipelines de datos y automatizaciones",
+    leadRest:
+      " que sacan el trabajo manual del medio y siguen corriendo cuando cerrás la notebook.",
+    pipeline: {
+      live: "sistema en producción",
+      note: "uptime · sin intervención manual",
+      nodes: [
+        { glyph: "⟶", label: "Origen", sub: "sheets · web · API" },
+        { glyph: "ƒ", label: "Transformar", sub: "normalizar · IA" },
+        { glyph: "✓", label: "Validar", sub: "reglas · confianza" },
+        { glyph: "↪", label: "Entregar", sub: "DB · email · redes" },
+      ],
+    },
     terminal: [
       {
         prompt: "~/portfolio",
@@ -51,25 +69,21 @@ const es = {
     sectionIndex: "01.",
     title: "Sobre Mí",
     fileName: "about.md",
-    bio1: "Soy Técnico en Desarrollo de Software y actualmente curso el último año de la Licenciatura en Gestión de Tecnología en la Universidad Nacional de La Matanza.",
-    bio2: "Me apasiona el back-end y la resolución de problemas. Disfruto creando soluciones que automatizan procesos y simplifican el trabajo cotidiano de los equipos.",
-    bio3: "Soy responsable y exigente con cada proyecto, buscando siempre entregar código limpio, eficiente y bien documentado.",
+    bio1: "Soy Técnico en Desarrollo de Software y estoy cursando el último año de la Licenciatura en Gestión de Tecnología en la Universidad Nacional de La Matanza.",
+    bio2: "Trabajo en automatización y back-end para una empresa del sector de medios de pago, donde los procesos que construyo tienen que correr solos, sin que nadie los esté mirando. Eso me volvió obsesivo con dos cosas: que no se rompan, y que el próximo que abra el código entienda qué hice y por qué.",
+    bio3: "Me muevo cómodo donde el problema todavía no tiene forma —cuando hay que entender un proceso manual, ver qué se puede automatizar y construir algo que aguante en producción. Esa parte, la de pasar del «esto lo hacemos a mano» al «esto ya corre solo», es la que más disfruto.",
     highlights: {
       backend: {
         title: "Back-end",
-        desc: "APIs REST robustas con Python (FastAPI) y Node.js (Express).",
+        desc: "APIs REST con Python (FastAPI) y Node.js (Express): autenticación con JWT, roles y endpoints documentados.",
       },
       db: {
         title: "Bases de Datos",
-        desc: "Modelado y consultas en PostgreSQL, MongoDB y SQL.",
+        desc: "Modelado y consultas en PostgreSQL y MongoDB. Validación, geocodificación y procesamiento de datos en lote.",
       },
       auto: {
         title: "Automatización",
-        desc: "Scripts y flujos inteligentes con Python, Apps Script y Docker.",
-      },
-      solving: {
-        title: "Resolución de Problemas",
-        desc: "Enfoque analítico para encontrar soluciones eficientes a desafíos complejos.",
+        desc: "Flujos en n8n, Make y Apps Script que reemplazan tareas manuales y corren en producción sin intervención.",
       },
     },
   },
@@ -82,9 +96,9 @@ const es = {
       label: "Proyectos destacados",
       sub: "producción y open source",
     },
-    techs: {
-      label: "Tecnologías",
-      sub: "en el stack profesional",
+    bilingual: {
+      label: "Bilingüe",
+      sub: "trabajo en ES y EN",
     },
     months: {
       label: "Meses en TradingPos",
@@ -110,14 +124,62 @@ const es = {
     title: "Proyectos",
     filters: {
       all: "Todos",
+      web: "Web & Apps",
       backend: "Back-end",
-      fullstack: "Full Stack",
       automation: "Automatización",
+    },
+    groups: {
+      web: "Web & Apps",
+      backend: "Back-end & APIs",
+      automation: "Automatizaciones",
     },
     problemLabel: "Problema",
     impactLabel: "Impacto",
-    teamBadge: "Trabajo en equipo",
+    teamBadge: "En equipo",
+    privateBadge: "App privada",
     items: {
+      visage: {
+        title: "Visage Buenos Aires",
+        problem:
+          "Un centro de estética necesitaba comunicar mejor los cuidados pre y post tratamiento a sus clientes.",
+        description:
+          "Sitio bilingüe (ES/EN) que explica los cuidados de cada tratamiento y centraliza el contacto por WhatsApp e Instagram.",
+        impact: "Mejoró la comunicación con sus clientes.",
+      },
+      mapa: {
+        title: "Mapa de Barridos con IA",
+        problem:
+          "Cientos de casos sin una forma visual de analizarlos ni resumirlos.",
+        description:
+          "Web que ubica los casos en un mapa interactivo con filtros por fecha y genera informes automáticos con IA (Gemini).",
+        impact:
+          "Organización geográfica de los casos e insights al instante.",
+      },
+      lorena: {
+        title: "Lorena Danán — Autora",
+        problem:
+          "Una escritora sin un espacio propio donde presentar su biografía y sus obras.",
+        description:
+          "Sitio bilingüe (ES/EN) con su biografía, sus libros y novedades, pensado para lectores y prensa.",
+        impact: "Hoy su biografía aparece en los buscadores.",
+      },
+      alquimia: {
+        title: "Alquimia Luz y Sombra",
+        problem:
+          "Una tarotista sin un canal propio para mostrar sus servicios.",
+        description:
+          "Sitio que presenta sus servicios de tarot y facilita el contacto, con una estética acorde a su marca.",
+        impact: "Amplió su llegada y mostró mejor sus servicios.",
+      },
+      casos: {
+        title: "Plataforma de Asignación de Casos",
+        problem:
+          "El equipo necesitaba asignar y controlar casos de auditoría entre varios auditores, con su información centralizada.",
+        description:
+          "Aplicación interna que asigna casos a auditores y permite seguir su estado e información en un solo lugar. Acceso restringido por login.",
+        impact:
+          "Más control sobre los auditores, los casos y su información.",
+      },
       normalizer: {
         title: "Normalizador de Direcciones",
         problem:
@@ -151,17 +213,43 @@ const es = {
           "Plataforma de financiamiento colectivo que conecta proyectos con inversores interesados en innovación y sostenibilidad.",
         impact: "Proyecto No Country con trabajo en equipo remoto.",
       },
+      social: {
+        title: "Fábrica de Contenido para Redes",
+        problem:
+          "Producir y publicar contenido en varias redes para cada idea del cliente era lento y repetitivo.",
+        description:
+          "A partir de una idea en Google Sheets, un webhook en n8n genera imágenes con IA, un guion y un video; luego Make lo publica en YouTube, Facebook, Instagram y TikTok con sus descripciones y hashtags.",
+        impact:
+          "De una idea a un reel y un post publicados en todas las redes, automáticamente.",
+      },
+      leadgen: {
+        title: "Captación de Leads con IA",
+        problem:
+          "Buscar negocios y conseguir contactos calificados a mano consumía horas y no escalaba.",
+        description:
+          "Flujo en Make que encuentra negocios con Google Maps Platform, scrapea sus sitios para extraer emails y envía correos personalizados generados con IA.",
+        impact: "Prospección automatizada de punta a punta, sin trabajo manual.",
+      },
+      whatsapp: {
+        title: "Outreach por WhatsApp",
+        problem:
+          "Enviar mensajes y seguir cada conversación manualmente era inviable a escala.",
+        description:
+          "Automatización en Make que envía mensajes por WhatsApp, detecta las respuestas y dispara seguimientos según el estado de cada contacto.",
+        impact: "Conversaciones y seguimientos gestionados automáticamente.",
+      },
     },
   },
   stack: {
     sectionIndex: "04.",
     title: "Stack Técnico",
     categories: {
-      languages: "Lenguajes",
-      frameworks: "Frameworks",
-      databases: "Bases de Datos",
-      devops: "DevOps & Cloud",
+      backend: "Back-end",
+      data: "Bases de datos",
+      infra: "Infra & Cloud",
+      frontend: "Front-end",
       automation: "Automatización",
+      tooling: "Herramientas",
     },
   },
   testimonials: {
@@ -272,6 +360,24 @@ const en: Dict = {
     ctaProjects: "View Projects",
     ctaContact: "Contact",
     ctaCv: "Download CV",
+    eyebrow: "Back-end & Automation Engineer · Buenos Aires",
+    available: "available",
+    headlinePre: "I build the machinery your business ",
+    headlineAccent: "doesn't see",
+    headlinePost: ", but uses all day.",
+    leadStrong: "APIs, data pipelines and automations",
+    leadRest:
+      " that take manual work out of the loop and keep running after you close the laptop.",
+    pipeline: {
+      live: "system in production",
+      note: "uptime · no manual intervention",
+      nodes: [
+        { glyph: "⟶", label: "Source", sub: "sheets · web · API" },
+        { glyph: "ƒ", label: "Transform", sub: "normalize · AI" },
+        { glyph: "✓", label: "Validate", sub: "rules · confidence" },
+        { glyph: "↪", label: "Deliver", sub: "DB · email · social" },
+      ],
+    },
     terminal: [
       {
         prompt: "~/portfolio",
@@ -300,25 +406,21 @@ const en: Dict = {
     sectionIndex: "01.",
     title: "About Me",
     fileName: "about.md",
-    bio1: "I'm a Software Development Technician, currently finishing the last year of my BSc in Technology Management at Universidad Nacional de La Matanza.",
-    bio2: "I'm passionate about back-end and problem solving. I enjoy building solutions that automate processes and simplify day-to-day teamwork.",
-    bio3: "I'm responsible and demanding with every project — I aim to deliver clean, efficient, and well-documented code.",
+    bio1: "I'm a Software Development Technician, currently in the final year of my degree in Technology Management at Universidad Nacional de La Matanza.",
+    bio2: "I work in automation and back-end for a company in the payments industry, where the processes I build have to run on their own, with no one watching them. That made me obsessive about two things: that they don't break, and that whoever opens the code next understands what I did and why.",
+    bio3: "I'm at home where the problem doesn't have a shape yet — understanding a manual process, figuring out what can be automated, and building something that holds up in production. Going from «we do this by hand» to «this already runs on its own» is the part I enjoy most.",
     highlights: {
       backend: {
         title: "Back-end",
-        desc: "Robust REST APIs with Python (FastAPI) and Node.js (Express).",
+        desc: "REST APIs with Python (FastAPI) and Node.js (Express): JWT authentication, roles, and documented endpoints.",
       },
       db: {
         title: "Databases",
-        desc: "Modeling and queries in PostgreSQL, MongoDB, and SQL.",
+        desc: "Modeling and queries in PostgreSQL and MongoDB. Validation, geocoding, and batch data processing.",
       },
       auto: {
         title: "Automation",
-        desc: "Smart scripts and workflows with Python, Apps Script, and Docker.",
-      },
-      solving: {
-        title: "Problem Solving",
-        desc: "Analytical approach to find efficient solutions for complex challenges.",
+        desc: "Flows in n8n, Make, and Apps Script that replace manual tasks and run unattended in production.",
       },
     },
   },
@@ -331,9 +433,9 @@ const en: Dict = {
       label: "Featured projects",
       sub: "production and open source",
     },
-    techs: {
-      label: "Technologies",
-      sub: "in professional stack",
+    bilingual: {
+      label: "Bilingual",
+      sub: "work in ES and EN",
     },
     months: {
       label: "Months at TradingPos",
@@ -359,14 +461,60 @@ const en: Dict = {
     title: "Projects",
     filters: {
       all: "All",
+      web: "Web & Apps",
       backend: "Back-end",
-      fullstack: "Full Stack",
       automation: "Automation",
+    },
+    groups: {
+      web: "Web & Apps",
+      backend: "Back-end & APIs",
+      automation: "Automations",
     },
     problemLabel: "Problem",
     impactLabel: "Impact",
-    teamBadge: "Teamwork",
+    teamBadge: "Team",
+    privateBadge: "Private app",
     items: {
+      visage: {
+        title: "Visage Buenos Aires",
+        problem:
+          "An aesthetics center needed to better communicate pre- and post-treatment care to its clients.",
+        description:
+          "Bilingual (ES/EN) site explaining the care for each treatment and centralizing contact via WhatsApp and Instagram.",
+        impact: "Improved communication with their clients.",
+      },
+      mapa: {
+        title: "Sweep Map with AI",
+        problem:
+          "Hundreds of cases with no visual way to analyze or summarize them.",
+        description:
+          "Web app that plots cases on an interactive map with date filters and generates automatic reports with AI (Gemini).",
+        impact: "Geographic organization of cases and instant insights.",
+      },
+      lorena: {
+        title: "Lorena Danán — Author",
+        problem:
+          "A writer without her own space to present her biography and works.",
+        description:
+          "Bilingual (ES/EN) site with her biography, books, and news, aimed at readers and press.",
+        impact: "Her biography now appears in search results.",
+      },
+      alquimia: {
+        title: "Alquimia Luz y Sombra",
+        problem:
+          "A tarot reader without her own channel to showcase her services.",
+        description:
+          "Site presenting her tarot services and making contact easy, with branding that fits her identity.",
+        impact: "Broadened her reach and better showcased her services.",
+      },
+      casos: {
+        title: "Case Assignment Platform",
+        problem:
+          "The team needed to assign and track audit cases across several auditors, with centralized information.",
+        description:
+          "Internal app that assigns cases to auditors and tracks their status and details in one place. Login-restricted access.",
+        impact: "More control over auditors, cases, and their information.",
+      },
       normalizer: {
         title: "Address Normalizer",
         problem:
@@ -399,17 +547,43 @@ const en: Dict = {
           "Crowdfunding platform connecting projects with investors interested in innovation and sustainability.",
         impact: "No Country project with remote teamwork.",
       },
+      social: {
+        title: "Social Content Factory",
+        problem:
+          "Producing and publishing content across several networks for every client idea was slow and repetitive.",
+        description:
+          "From an idea in Google Sheets, an n8n webhook generates AI images, a script, and a video; then Make publishes it to YouTube, Facebook, Instagram, and TikTok with captions and hashtags.",
+        impact:
+          "From one idea to a reel and post published across every network, automatically.",
+      },
+      leadgen: {
+        title: "AI Lead Generation",
+        problem:
+          "Finding businesses and qualified contacts by hand took hours and didn't scale.",
+        description:
+          "Make workflow that finds businesses via Google Maps Platform, scrapes their sites to extract emails, and sends personalized AI-generated outreach.",
+        impact: "End-to-end automated prospecting with no manual work.",
+      },
+      whatsapp: {
+        title: "WhatsApp Outreach",
+        problem:
+          "Sending messages and following up on each conversation manually didn't scale.",
+        description:
+          "Make automation that sends WhatsApp messages, detects replies, and triggers follow-ups based on each contact's status.",
+        impact: "Conversations and follow-ups handled automatically.",
+      },
     },
   },
   stack: {
     sectionIndex: "04.",
     title: "Tech Stack",
     categories: {
-      languages: "Languages",
-      frameworks: "Frameworks",
-      databases: "Databases",
-      devops: "DevOps & Cloud",
+      backend: "Back-end",
+      data: "Databases",
+      infra: "Infra & Cloud",
+      frontend: "Front-end",
       automation: "Automation",
+      tooling: "Tooling",
     },
   },
   testimonials: {

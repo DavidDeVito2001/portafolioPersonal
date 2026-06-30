@@ -1,71 +1,67 @@
 "use client"
 
-import { Server, Workflow, Database, Zap } from "lucide-react"
+import { Server, Workflow, Database } from "lucide-react"
+import { motion, useReducedMotion } from "motion/react"
 import { useLanguage } from "@/components/language-provider"
-import { Reveal } from "@/components/reveal"
+import { SectionHeader } from "@/components/section-header"
+
+const EASE = [0.16, 1, 0.3, 1] as const
 
 export function About() {
   const { t } = useLanguage()
   const h = t.about.highlights
+  const reduce = useReducedMotion()
 
   const highlights = [
     { icon: Server, ...h.backend },
     { icon: Database, ...h.db },
     { icon: Workflow, ...h.auto },
-    { icon: Zap, ...h.solving },
   ]
+
+  // Reveal consistente con el resto del sitio: fade + 10px, una sola vez.
+  const reveal = (delay: number) => ({
+    initial: reduce ? { opacity: 0 } : { opacity: 0, y: 10 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: "0px 0px -80px 0px" },
+    transition: { duration: 0.5, ease: EASE, delay: reduce ? 0 : delay },
+  })
 
   return (
     <section id="about" className="py-24 px-4">
       <div className="mx-auto max-w-6xl">
-        <div className="flex items-center gap-3 mb-12">
-          <span className="text-primary font-mono text-sm">
-            {t.about.sectionIndex}
-          </span>
-          <h2 className="text-2xl md:text-3xl font-bold text-foreground">
-            {t.about.title}
-          </h2>
-          <div className="flex-1 h-px bg-border" />
-        </div>
+        <SectionHeader index={t.about.sectionIndex} title={t.about.title} />
 
-        <div className="grid md:grid-cols-2 gap-12">
-          <Reveal>
-            <div className="space-y-4">
-              <div className="bg-secondary border border-border rounded-lg p-4 font-mono text-sm">
-                <div className="flex items-center gap-2 mb-3 text-muted-foreground">
-                  <span className="h-3 w-3 rounded-full bg-destructive" />
-                  <span className="h-3 w-3 rounded-full bg-[#f59e0b]" />
-                  <span className="h-3 w-3 rounded-full bg-primary" />
-                  <span className="ml-2">{t.about.fileName}</span>
-                </div>
-                <div className="text-muted-foreground leading-relaxed">
-                  <p className="mb-3">
-                    <span className="text-primary">{">"}</span> {t.about.bio1}
-                  </p>
-                  <p className="mb-3">
-                    <span className="text-primary">{">"}</span> {t.about.bio2}
-                  </p>
-                  <p>
-                    <span className="text-primary">{">"}</span> {t.about.bio3}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </Reveal>
+        <div className="grid gap-10 md:grid-cols-2 lg:gap-16">
+          {/* Narrativa — protagonista, con aire e interlineado amplio */}
+          <motion.div
+            {...reveal(0)}
+            className="space-y-5 text-[15px] leading-[1.75] text-muted-foreground md:text-base"
+          >
+            <p>{t.about.bio1}</p>
+            <p>{t.about.bio2}</p>
+            <p>{t.about.bio3}</p>
+          </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Tres cards apiladas: balanceadas, sin hueco de la cuarta */}
+          <div className="space-y-4">
             {highlights.map((item, i) => (
-              <Reveal key={item.title} delay={i * 80}>
-                <div className="group h-full bg-secondary border border-border rounded-lg p-5 hover:border-primary/50 hover:shadow-[0_0_20px_-10px_rgba(0,255,136,0.5)] transition-all">
-                  <item.icon className="h-6 w-6 text-primary mb-3" />
-                  <h3 className="font-semibold text-foreground mb-1 text-sm">
+              <motion.div
+                key={item.title}
+                {...reveal(0.12 + i * 0.06)}
+                className="group flex gap-4 rounded-xl border border-line bg-surface p-5 transition-colors duration-300 hover:border-signal/40"
+              >
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-signal/5 text-muted-foreground transition-colors duration-300 group-hover:bg-signal/10 group-hover:text-signal">
+                  <item.icon className="h-5 w-5" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-semibold text-bone">
                     {item.title}
                   </h3>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
+                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
                     {item.desc}
                   </p>
                 </div>
-              </Reveal>
+              </motion.div>
             ))}
           </div>
         </div>
