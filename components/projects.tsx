@@ -224,10 +224,22 @@ function ProjectCard({ meta, index }: { meta: ProjectMeta; index: number }) {
   const Icon = groupIcon[meta.group]
 
   const reduce = useReducedMotion()
-  const [hovered, setHovered] = useState(false)
-  const [pinned, setPinned] = useState(false)
-  const [focused, setFocused] = useState(false)
-  const open = hovered || pinned || focused
+
+  // Revelado del detalle:
+  // - Desktop: hover puro de CSS (`group-hover`) → nunca queda pegado.
+  // - Teclado: `group-focus-within` al enfocar un link interno.
+  // - Touch (sin hover): el tap togglea `tapped` → marca la card con `.is-open`.
+  // El click sólo controla el detalle en dispositivos SIN hover, así en
+  // desktop no se "pinea" nada y se respeta el hover.
+  const [tapped, setTapped] = useState(false)
+  const handleClick = () => {
+    if (
+      typeof window !== "undefined" &&
+      !window.matchMedia("(hover: hover)").matches
+    ) {
+      setTapped((v) => !v)
+    }
+  }
 
   return (
     // El <article> maneja el reflow al filtrar (`layout`) y el fundido de
@@ -235,18 +247,11 @@ function ProjectCard({ meta, index }: { meta: ProjectMeta; index: number }) {
     <motion.article
       layout={reduce ? false : "position"}
       exit={{ opacity: 0, transition: { duration: 0.25 } }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      onClick={() => setPinned((p) => !p)}
-      onFocus={() => setFocused(true)}
-      onBlur={(e) => {
-        if (!e.currentTarget.contains(e.relatedTarget as Node)) setFocused(false)
-      }}
-      tabIndex={0}
+      onClick={handleClick}
       aria-label={copy.title}
-      className={`group relative cursor-pointer overflow-hidden rounded-xl border border-line bg-surface outline-none transition-colors focus-visible:border-signal ${
-        meta.size === "wide" ? "sm:col-span-2" : ""
-      }`}
+      className={`group relative cursor-pointer overflow-hidden rounded-xl border border-line bg-surface ${
+        tapped ? "is-open" : ""
+      } ${meta.size === "wide" ? "sm:col-span-2" : ""}`}
     >
       {/* Reveal on-scroll (fade + 10px) en un wrapper SIN layout, para no chocar
           con la proyección de `layout` del <article>. */}
@@ -294,12 +299,10 @@ function ProjectCard({ meta, index }: { meta: ProjectMeta; index: number }) {
         </div>
       )}
 
-      {/* Estado compacto: título + tags sobre un velo inferior */}
-      <motion.div
-        initial={false}
-        animate={{ opacity: open ? 0 : 1 }}
-        transition={{ duration: 0.3, ease: EASE }}
-        className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink via-ink/85 to-transparent p-4 pt-12"
+      {/* Estado compacto: título + tags sobre un velo inferior.
+          Se oculta en hover / focus-within / tap (touch). */}
+      <div
+        className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink via-ink/85 to-transparent p-4 pt-12 opacity-100 transition duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:opacity-0 group-focus-within:opacity-0 group-[.is-open]:opacity-0"
       >
         <h3 className="font-display text-base font-semibold text-bone">
           {copy.title}
@@ -314,15 +317,11 @@ function ProjectCard({ meta, index }: { meta: ProjectMeta; index: number }) {
             </span>
           ))}
         </div>
-      </motion.div>
+      </div>
 
-      {/* Panel de info: aparece al hover / focus / tap */}
-      <motion.div
-        initial={false}
-        animate={{ opacity: open ? 1 : 0, y: open ? 0 : 8 }}
-        transition={{ duration: 0.3, ease: EASE }}
-        style={{ pointerEvents: open ? "auto" : "none" }}
-        className="absolute inset-0 flex flex-col gap-2 bg-ink/95 p-5 backdrop-blur-sm"
+      {/* Panel de info: aparece al hover / focus-within / tap (touch). */}
+      <div
+        className="absolute inset-0 flex flex-col gap-2 bg-ink/95 p-5 backdrop-blur-sm opacity-0 translate-y-2 pointer-events-none transition duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:translate-y-0 group-focus-within:pointer-events-auto group-[.is-open]:opacity-100 group-[.is-open]:translate-y-0 group-[.is-open]:pointer-events-auto"
       >
         <h3 className="font-display text-base font-semibold text-signal">
           {copy.title}
@@ -373,7 +372,7 @@ function ProjectCard({ meta, index }: { meta: ProjectMeta; index: number }) {
             />
           )}
         </div>
-      </motion.div>
+      </div>
      </motion.div>
     </motion.article>
   )
