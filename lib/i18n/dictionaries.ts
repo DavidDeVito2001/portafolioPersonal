@@ -281,6 +281,7 @@ const es = {
   education: {
     sectionIndex: "06.",
     title: "Estudios",
+    certsLabel: "Certificaciones",
     items: [
       {
         type: "degree" as const,
@@ -615,6 +616,7 @@ const en: Dict = {
   education: {
     sectionIndex: "06.",
     title: "Education",
+    certsLabel: "Certifications",
     items: [
       {
         type: "degree" as const,
