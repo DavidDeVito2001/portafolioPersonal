@@ -15,15 +15,20 @@ export function Hero() {
   const sectionRef = useRef<HTMLElement>(null)
 
   // ¿Corre Beams en este dispositivo? (perf + a11y)
-  // No cargamos three.js en mobile ni con prefers-reduced-motion.
+  // Sólo lo apagamos con prefers-reduced-motion. En mobile corre una
+  // versión liviana (menos beams, dpr 1) en lugar de desactivarse.
   const [enabled, setEnabled] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   // Pausar la animación cuando el hero sale del viewport.
   const [inView, setInView] = useState(true)
+  // Fade-in: recién mostramos el canvas cuando pintó el primer frame.
+  const [ready, setReady] = useState(false)
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    const isMobile = window.matchMedia("(max-width: 768px)").matches
-    setEnabled(!reduce && !isMobile)
+    const mobile = window.matchMedia("(max-width: 768px)").matches
+    setIsMobile(mobile)
+    setEnabled(!reduce)
   }, [])
 
   useEffect(() => {
@@ -52,20 +57,26 @@ export function Hero() {
         aria-hidden="true"
       />
 
-      {/* Beams animado — sólo en desktop sin reduced-motion */}
+      {/* Beams animado — desktop full, mobile liviano. Off con reduced-motion.
+          Fade-in cuando el canvas pintó su primer frame (evita el "pop"). */}
       {enabled && (
-        <div className="absolute inset-0 z-0" aria-hidden="true">
+        <div
+          className="absolute inset-0 z-0 transition-opacity duration-700 ease-out"
+          style={{ opacity: ready ? 1 : 0 }}
+          aria-hidden="true"
+        >
           <Beams
             beamWidth={2}
             beamHeight={15}
-            beamNumber={12}
+            beamNumber={isMobile ? 6 : 12}
             lightColor="#5B8DEF"
-            speed={2}
+            speed={isMobile ? 1.4 : 2}
             noiseIntensity={1.75}
             scale={0.2}
             rotation={30}
             paused={!inView}
-            dpr={BEAMS_DPR}
+            dpr={isMobile ? [1, 1] : BEAMS_DPR}
+            onReady={() => setReady(true)}
           />
         </div>
       )}

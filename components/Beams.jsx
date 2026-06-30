@@ -153,7 +153,8 @@ const Beams = ({
   scale = 0.2,
   rotation = 0,
   paused = false,
-  dpr = [1, 2]
+  dpr = [1, 2],
+  onReady
 }) => {
   const meshRef = useRef(null);
   const beamMaterial = useMemo(
@@ -222,9 +223,23 @@ const Beams = ({
       <ambientLight intensity={1} />
       <color attach="background" args={['#000000']} />
       <PerspectiveCamera makeDefault position={[0, 0, 20]} fov={30} />
+      {onReady ? <FirstFrame onReady={onReady} /> : null}
     </CanvasWrapper>
   );
 };
+
+// Avisa cuando se pintó el primer frame (shaders ya compilados) para
+// poder hacer fade-in del canvas en vez de que aparezca de golpe.
+function FirstFrame({ onReady }) {
+  const fired = useRef(false);
+  useFrame(() => {
+    if (!fired.current) {
+      fired.current = true;
+      onReady();
+    }
+  });
+  return null;
+}
 
 function createStackedPlanesBufferGeometry(n, width, height, spacing, heightSegments) {
   const geometry = new THREE.BufferGeometry();
